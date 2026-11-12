@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>בונה המקדש — בדיקת הגייה</title>
+<link rel="icon" href="assets/icon.ico">
+<style>
+body{font:18px Arial,sans-serif;background:#e9e1c7;color:#283b42;max-width:1000px;margin:24px auto;padding:16px}
+input{font:inherit;width:90%;padding:12px}article{background:#fff5dd;border:1px solid #ad955e;border-radius:12px;margin:16px 0;padding:16px}
+code{display:block;direction:ltr;text-align:left;font-size:13px;margin:8px 0}button{font:inherit;min-height:44px;padding:8px 24px;background:#24677c;color:white;border:0;border-radius:8px}
+.spoken{color:#556e3e}p{line-height:1.6}small{display:block}
+</style>
+<h1>בדיקת הגייה</h1>
+<p>משווים את הכתוב לנוסח ההקראה. אין השמעה אוטומטית; כל קטע מתנגן רק בלחיצה. ניקוד והקשר עשויים לשפר הגייה, אך אינם מבטיחים מלעיל או מלרע. כשצריך אפשר להשתמש בהקלטה מקומית.</p>
+<p>לתיקון: מוסיפים את מזהה הקטע ל־SPEECH_OVERRIDES בקובץ src/data/pronunciation.js עם נוסח מוקרא מתוקן; או ל־MANUAL_AUDIO עם שם MP3 בתיקיית assets/audio/voices. לאחר מכן מריצים מחדש את הכנת הקולות והפקתם.</p>
+<input id="filter" aria-label="חיפוש קטע או דמות" placeholder="חיפוש מילה או דמות">
+<p id="status">טוען רשימת קטעים…</p><main id="clips"></main>
+<script type="module">
+let lines=[],current=null;
+const main=document.querySelector('#clips'),filter=document.querySelector('#filter'),status=document.querySelector('#status');
+function render(){
+  main.replaceChildren();
+  const query=filter.value.trim(),shown=lines.filter(l=>[l.text,l.spokenText,l.id,l.profile].some(s=>s?.includes(query)));
+  status.textContent=`${shown.length} קטעים · מוצגים עד 80, אפשר לצמצם בחיפוש`;
+  for(const line of shown.slice(0,80)){
+    const article=document.createElement('article'),title=document.createElement('strong'),id=document.createElement('code');
+    const display=document.createElement('p'),spoken=document.createElement('p'),play=document.createElement('button');
+    title.textContent=line.label||line.profile;id.textContent=line.id;display.textContent='במסך: '+line.text;
+    spoken.className='spoken';spoken.textContent='בהקראה: '+(line.spokenText||line.text);
+    play.textContent=line.manualFile?'השמעת הקלטה חלופית':'השמעה';
+    play.addEventListener('click',()=>{
+      current?.pause();current=new Audio(new URL('assets/audio/voices/'+line.file,location.href));
+      current.play().catch(()=>{status.textContent='הקטע אינו זמין. יש להשלים את הפקת הקולות.';});
+    });
+    article.append(title,id,display,spoken,play);main.append(article);
+  }
+}
+try{const response=await fetch('assets/audio/voices/manifest.json');if(!response.ok)throw Error();lines=(await response.json()).lines;render();}
+catch{status.textContent='לא ניתן לטעון את הרשימה. פותחים את הדף דרך שרת האתר.';}
+filter.addEventListener('input',render);window.addEventListener('pagehide',()=>current?.pause());
+</script>
+</html>

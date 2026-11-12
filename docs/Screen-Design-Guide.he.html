@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>בונה המקדש — מדריך קובצי עיצוב המסכים</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f1f4f7; color: #223447; font: 17px/1.75 "Segoe UI", Arial, sans-serif; }
+  header { background: linear-gradient(115deg, #123e55, #08263c); color: #fff3d1; padding: 36px max(24px, calc((100vw - 1050px)/2)); }
+  h1 { margin: 0 0 8px; font-size: 32px; line-height: 1.4; }
+  header p { margin: 4px 0; color: #d6e4ed; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  section { margin: 0 0 24px; padding: 24px; background: white; border: 1px solid #dbe3ea; border-radius: 12px; }
+  h2 { margin: 0 0 14px; color: #174f6b; font-size: 25px; }
+  h3 { margin: 24px 0 8px; font-size: 20px; color: #334b5e; }
+  p { margin: 8px 0 14px; }
+  a { color: #116c94; text-underline-offset: 3px; }
+  nav { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 0; }
+  nav a { padding: 5px 12px; background: #f4e5bc; color: #243f50; border-radius: 6px; }
+  code { font: 14px/1.7 Consolas, monospace; direction: ltr; unicode-bidi: isolate; display: inline-block; max-width: 100%; overflow-wrap: anywhere; background: #edf2f6; color: #18364c; padding: 1px 5px; border-radius: 4px; vertical-align: middle; }
+  .path { display: block; margin: 5px 0 12px; padding: 8px 12px; }
+  .notice { background: #fff7e2; border-right: 5px solid #c29b48; padding: 14px 18px; border-radius: 6px; }
+  .safe { background: #eaf5ef; border-right-color: #438a63; }
+  .muted { color: #657787; font-size: 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { padding: 12px; text-align: right; vertical-align: top; border-bottom: 1px solid #dbe3ea; }
+  th { background: #e9f0f5; color: #174f6b; }
+  ul, ol { padding-right: 25px; }
+  li { margin-bottom: 7px; }
+  .template { background: #f2f6fa; border: 1px dashed #809caf; padding: 16px; border-radius: 8px; }
+  @media (max-width: 650px) {
+    main { padding: 12px; } section { padding: 16px; } h1 { font-size: 25px; }
+    table, tbody, tr, td { display: block; } thead { display: none; }
+    tr { border-bottom: 2px solid #dbe3ea; } td { border: 0; padding: 5px 8px; }
+  }
+  @media print {
+    body { background: white; font-size: 12pt; } header { padding: 12px 24px; background: white; color: #174f6b; }
+    header p { color: #334b5e; } main { padding: 0; } nav { display: none; }
+    section { border: 0; padding: 12px 0; } h2, h3 { break-after: avoid; }
+    tr, .notice, .template { break-inside: avoid; } code { font-size: 9pt; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>בונה המקדש — איפה נמצא העיצוב של כל מסך?</h1>
+  <p>מדריך לשליחת חלופות עיצוב, תמונות השראה ובקשות ממוקדות לשדרוג.</p>
+  <p>עודכן לגרסת הילדים ושלב שילה בתאריך 30.10.2026. אין צורך לערוך קוד כדי להציע חלופה.</p>
+  <nav aria-label="תוכן העניינים">
+    <a href="#quick">מפה מהירה</a><a href="#screens">מסכים ראשיים</a>
+    <a href="#levels">שלבי המשחק</a><a href="#minigames">מיני־משחקים</a>
+    <a href="#shared">דמויות וממשק</a><a href="#alternatives">שליחת חלופה</a>
+  </nav>
+</header>
+<main>
+<section id="child-edition">
+  <h2>חדש — גרסה ידידותית לילדים וכרמי שילה</h2>
+  <p>עדכון נוסף: דמויות עם אביזרי תפקיד ואנימציית חרב, RTL בגלריה ובמיקוד השלבים,
+    מסלול שילה מורחב, ניקוד בכל המשחק ומוזיאון בעיצוב קלף.</p>
+  <ul>
+    <li><strong>שלב 5:</strong> <code>src/data/level05.js</code> — מסלול ושלושה עצים;
+      <code>src/core/shilohArt.js</code> — נוף, טרסות, עצי זית ובית בד;
+      <code>assets/images/scenery/shiloh-groves.webp</code> — איור הרקע שסופק.</li>
+    <li><strong>התאמה בחוטים:</strong> <code>src/minigames/matching.js</code>;
+      <strong>תעלות לגינת המחנה:</strong> <code>src/minigames/waterChannels.js</code>;
+      <strong>כתישה וסינון:</strong> <code>src/minigames/olivePress.js</code>.</li>
+    <li><strong>איורים לימודיים משותפים:</strong> <code>src/core/learningArt.js</code>.
+      הרקע והמסגרות הכחולים־זהובים משותפים דרך <code>src/minigames/shared.js</code>.</li>
+    <li><strong>גלריית 16 דמויות:</strong> <code>src/core/characterGallery.js</code>;
+      קטלוג, צבעים ותנאי פתיחה: <code>src/data/characters.js</code>.
+      בחירה בתפריט ההשהיה אינה מאפסת את העולם ומשנה מראה בלבד.</li>
+    <li><strong>לבוש ואביזרי תפקיד:</strong> <code>src/core/characterArt.js</code>.
+      חושן עם 12 אבנים, לוחות, כלי מלאכה, כתרים וחרב נעה לדוד.
+      <code>src/core/art.js</code> מחבר אותם לאנימציית השחקן בלי לשנות ממדי התנגשות.</li>
+    <li><strong>ניקוד התצוגה:</strong> <code>src/core/niqqud.js</code> ו־<code>src/data/niqqud.generated.js</code>.
+      המאגר מוכן מראש; אין קריאה לשירות חיצוני בזמן משחק.
+      כלים: <code>tools/collect-niqqud.mjs</code>, <code>tools/generate-niqqud.py</code>.</li>
+    <li><strong>המוזיאון:</strong> <code>src/scenes/museum.js</code> — קלף, כפתורים כחולים־זהובים,
+      רשימה מימין, איורים ועמודים לטקסטים מנוקדים ארוכים.</li>
+    <li><strong>עזרה מונפשת בהשהיה:</strong> <code>src/core/controlsHelp.js</code>.
+      <code>src/scenes/play.js</code> מחבר אותה ואת גלריית הדמויות.</li>
+    <li><strong>הרכבה:</strong> <code>src/scenes/construction.js</code> — תלת־ממד כברירת מחדל,
+      כרטיסי איור וכמות והדגמת גרירה. <code>src/core/construction3d.js</code> — תצוגה שקופה העוקבת
+      אחרי הגרירה. מבט־על הוא רק גיבוי במקרה כשל WebGL.</li>
+    <li><strong>איסוף וסיכום:</strong> מרווחי 128 פיקסלים, בלי שמות צפים,
+      מוני אייקונים וידע אופציונלי ב־<code>src/scenes/summary.js</code>.
+      תחנות נפתחות בבחירה בלבד, עם מרווח משחק פעיל בין פעילויות.</li>
+    <li><strong>נייד:</strong> פקדים שקופים מעל הקנבס, ללא פסי צד שמקטינים אותו;
+      משחקי הפאזל והגלריה משתמשים בכפתורים משלהם.</li>
+    <li><strong>הגייה:</strong> <code>pronunciation.html</code> — בדיקה בהשמעה יזומה;
+      <code>src/data/pronunciation.js</code> — נוסח דיבור נפרד והקלטות חלופיות.
+      <code>src/data/voiceText.js</code> כולל גם את חנה ואת המשחקים החדשים.</li>
+  </ul>
+  <p>שלב 1 נשאר דו־ממדי. שלבים 1–5 משחיקים; שלב 6 והלאה עדיין בפיתוח.
+    הכמויות בסדנת ההרכבה אינן מלאי התרומות שנאספו. המים בפאזל משקים גינה ולא זיתי מנורה.</p>
+  <p>שילה כולל כעת 360 עמודות, מסיק יזום, טיפוס בשלוש חורשות, ארבעה שומרים,
+    מדפי הצלה ומעבר מים שנפתח אחרי פאזל הגינה. הרקע המאויר אינו מפת ההתנגשות.</p>
+</section>
+<section>
+  <h2>לפני שמתחילים</h2>
+  <p><strong>תיקיית המקור — כאן מבצעים שינויים:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder</code>
+  <p><strong>תיקיית ההעלאה — עותק שמסנכרנים אחרי תיקון ובדיקה:</strong></p>
+  <code class="path">C:\Users\DELL\Desktop\TempleBuilder-Upload</code>
+  <div class="notice">
+    <strong>לא לכל מסך יש קובץ תמונה.</strong>
+    רוב המשחק מצויר בזמן אמת בקוד Canvas. מסך הפתיחה החדש משלב תמונת WebP עם כותרת וכפתורים אמיתיים.
+    לכן שינוי של קובץ PNG לבדו לא יחליף מסך שמצויר בקוד.
+  </div>
+  <p>בכל מסך כדאי להבחין בין <strong>רקע ואיורים</strong>, <strong>ממשק וכפתורים</strong> ו<strong>משחקיות</strong>.
+    אפשר לשנות מראה בלי לשנות תנועה, התנגשות, ניקוד, שאלות או שמירות.</p>
+  <p class="muted">המסמך הוא מדריך מקומי בלבד. הוא אינו מפעיל את המשחק, אינו משמיע קול ואינו מפרסם קבצים לאתר.
+    אפשר לפתוח אותו בדפדפן ולהשתמש ב־Ctrl+P כדי לשמור כ־PDF.</p>
+</section>
+
+<section id="quick">
+  <h2>מפת המסכים המהירה</h2>
+  <p>הנתיבים המקוצרים בטבלה מתחילים בתיקיית המקור שמעל. בהמשך מופיעים גם הנתיבים המלאים.</p>
+  <table>
+    <thead><tr><th>מה רואים</th><th>הקובץ המרכזי</th><th>מה אפשר לשלוח כחלופה</th></tr></thead>
+    <tbody>
+      <tr><td><a href="#entry">מסך הפתיחה והמסע לירושלים</a></td><td><code>src/scenes/menu.js</code><br><code>src/core/entryArt.js</code><br><code>assets/images/entry-journey.webp</code></td><td>איור פנורמי, מגילה, סגנון כפתורים וכותרת.</td></tr>
+      <tr><td><a href="#select">בחירת שלבים</a></td><td><code>src/scenes/levelSelect.js</code></td><td>מפת מסע, כרטיסי שלבים, סימוני נעילה והתקדמות.</td></tr>
+      <tr><td><a href="#camp">שלב 1 — מחנה ישראל</a></td><td><code>src/core/campArt.js</code><br><code>src/scenes/play.js</code><br><code>src/game/tilemap.js</code></td><td>נוף צדדי של מחנה, אוהלים, הרים, חול וצמחייה.</td></tr>
+      <tr><td><a href="#construction">שלב 2 — הרכבת המשכן</a></td><td><code>src/scenes/construction.js</code><br><code>src/core/constructionArt.js</code></td><td>עיצוב סדנה, מגש חלקים, שרטוט, רמזים וכפתורים.</td></tr>
+      <tr><td><a href="#model3d">תצוגת המשכן בתלת־ממד</a></td><td><code>src/core/construction3d.js</code><br><code>src/data/mishkan3d.js</code></td><td>חומרים, תאורה, צבעים ופרטי מראה; לא החלפת הגאומטריה בתמונה.</td></tr>
+      <tr><td><a href="#jordan">שלב 3 — מעבר הירדן</a></td><td><code>src/scenes/play.js</code><br><code>src/core/natureArt.js</code></td><td>נהר במבט צד, קירות מים, גדות, קני סוף ודגים.</td></tr>
+      <tr><td><a href="#gilgal">שלב 4 — המחנה בגלגל</a></td><td><code>src/core/natureArt.js</code><br><code>src/scenes/play.js</code></td><td>מחנה, שדות, דקלים, אבני זיכרון ושומרים.</td></tr>
+      <tr><td><a href="#summary">סיכום שלב</a></td><td><code>src/scenes/summary.js</code></td><td>מסך הצלחה, עיצוב ניקוד, פרס וכרטיסיית ידע.</td></tr>
+      <tr><td><a href="#museum">מוזיאון המקדש</a></td><td><code>src/scenes/museum.js</code></td><td>ספרייה או מוזיאון, רשימת כרטיסיות ופאנל מידע.</td></tr>
+      <tr><td><a href="#minigames">חידון, מיון, אריגה ואתגר שופר</a></td><td><code>src/minigames/</code></td><td>דוגמת מסך לכל מיני־משחק, כרטיסים, כפתורים וכלים.</td></tr>
+      <tr><td><a href="#hud">בועות שיחה, לבבות ואיסופים</a></td><td><code>src/game/hud.js</code></td><td>מסגרות, תג שם, סמלים וסגנון טקסט.</td></tr>
+      <tr><td><a href="#mobile">כפתורי מגע וטעינה בנייד</a></td><td><code>index.html</code><br><code>src/core/touchPad.js</code></td><td>פקדים ברורים, גדולים ונוחים לאצבעות.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="screens">
+  <h2>המסכים הראשיים</h2>
+  <h3 id="entry">1. מסך הפתיחה — המסע מהמשכן למקדש</h3>
+  <p><strong>האיור שבשימוש מקומי:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\assets\images\entry-journey.webp</code>
+  <p>זהו קובץ תמונה אמיתי, בגודל 1600×650 וכ־290KB, שהוכן מהאיור שסיפקת.
+    התמונה מציגה את המדבר, הירדן, שילה, נוב וגבעון וירושלים. איור סמלי, לא מפה גאוגרפית מדויקת.</p>
+  <p><strong>טעינת האיור, ציור הרקע והכפתורים במחשב:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\core\entryArt.js</code>
+  <p>נקודות כניסה: <code>ENTRY_ART_URL</code>, <code>ENTRY_BUTTONS</code>,
+    <code>drawEntryBackdrop()</code>, <code>drawEntryButton()</code>.</p>
+  <p><strong>התנועה שמתווספת מעל האיור — בלי לשנות את קובץ התמונה:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\core\entryMotion.js</code>
+  <p><code>drawEntryMotion()</code> ו־<code>entryMotionPoint()</code> מציירים אור לאורך הדרך שבתמונה,
+    נצנוצי מים וציפורים. אלו שכבות קוד מעל איור, לא ציור מחדש של כל הפרטים.</p>
+  <code class="path">C:\Projects\TempleBuilder\src\core\visualMotion.js</code>
+  <p>מכבד את העדפת המערכת להפחתת תנועה, בלי לשנות את שעון המשחק או את הפיזיקה.</p>
+  <p><strong>הכותרת, התחלה/המשך, בחירת שלב, מוזיאון ותפריט המגע:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\scenes\menu.js</code>
+  <p>נקודות כניסה: <code>draw()</code>, <code>_syncTouchMenu()</code>. עיצוב כפתורי ה־HTML בנייד נמצא גם ב־<code>index.html</code>.</p>
+  <p><strong>הכנת תמונת המקור לנכס המשחק:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\tools\prepare-menu-art.py</code>
+  <p>הכלי משאיר את המקור ללא שינוי, מכין אזור נקי לכותרת, וחותך מעל כפתור ההתחלה המוטבע.
+    אין צורך להריץ אותו בזמן המשחק.</p>
+  <p><strong>ציור הדרך הקודם — גיבוי בלבד אם התמונה אינה נטענת:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\core\journeyArt.js</code>
+  <div class="notice safe">להחלפת האיור החדש יש להתייחס ל־<code>entry-journey.webp</code> ול־<code>entryArt.js</code>.
+    שינוי <code>journeyArt.js</code> בלבד משנה את הגיבוי, ולא את התמונה החדשה.</div>
+
+  <h3 id="select">2. מסך בחירת שלבים</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\scenes\levelSelect.js</code>
+  <p><strong>קלף, מסגרות, רקע וכפתורים כחולים־זהובים:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\core\selectionArt.js</code>
+  <p><strong>טעינת הנופים ובחירת תמונה מקדימה לפי שלב:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\core\sceneryAssets.js</code>
+  <p>הנכסים הם חיתוכי נוף נקיים מכפתורים וממספור. הם אינם פותחים שלבים נעולים או מחליפים את נתוני המשחק.</p>
+  <code class="path">C:\Projects\TempleBuilder\assets\images\scenery</code>
+  <p><strong>הכנת חיתוכי נוף מתמונות ההשראה, בלי לערוך את המקור:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\tools\prepare-rich-visuals.py</code>
+  <p>כרטיסי השלבים, שבעת הפרקים, תיבות הפרטים, סמל בוס, נעילה, מסגרות וחצי ניווט.
+    נקודות כניסה: <code>draw()</code>, <code>_drawCard()</code>, <code>_drawDetails()</code>, <code>_drawBossIcon()</code>.</p>
+  <p><strong>שמות, תקופות ופלטות צבעים של הפרקים והשלבים:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\data\levels.js</code>
+  <p>מתאים לשלוח מפה או רצועת מסע כחלופה, אבל צריך לשמור אפשרות לבחור שלב ולזהות מה פתוח ומה עדיין בפיתוח.</p>
+
+  <h3 id="summary">3. מסך סיכום שלב</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\scenes\summary.js</code>
+  <p>רקע ההצלחה, פרס השלב, ניקוד, זמן, כמות איסופים, הודעת שיא וכרטיסיית ידע.
+    נקודות כניסה: <code>draw()</code>, <code>_relicBadge()</code>, <code>_stats()</code>, <code>_card()</code>.</p>
+  <p>העימוד של טקסט ארוך נמצא ב־<code>summaryTextPages()</code>. אפשר לשנות את המסגרת והאווירה בלי לשנות את התוצאות או להשמיט מידע.</p>
+
+  <h3 id="museum">4. מוזיאון המקדש</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\scenes\museum.js</code>
+  <p>רשימת הכרטיסיות, כרטיסיות נעולות, פאנל הפרטים, תג סוג הכרטיסייה והגלילה.
+    נקודות כניסה: <code>draw()</code>, <code>_detail()</code>.</p>
+  <p><strong>התוכן הלימודי של הכרטיסיות, בנפרד מהעיצוב:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\data\codex.js</code>
+</section>
+
+<section id="levels">
+  <h2>שלבי המשחק והרקעים</h2>
+  <div class="notice">שלבים 1–5 משחיקים. שלבים 6–14 מופיעים בתכנון ובנתוני השלבים, אבל עדיין אין להם מסכי משחק פעילים נפרדים.
+    <strong>שלב 1 נשאר פלטפורמר דו־ממדי במבט צד.</strong></div>
+
+  <h3 id="camp">5. שלב 1 — מחנה ישראל</h3>
+  <p><strong>הרכבת המסך, שכבות נוף, ענן, סופה, דמויות ואפקטים:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\scenes\play.js</code>
+  <p>הרכבת השכבות נמצאת ב־<code>draw()</code>; הסופה נשארת ב־<code>_drawStorm()</code>.</p>
+  <p><strong>ציור המחנה החדש — שקיעה, הרים, דיונות, אוהלים, בדים, צמחייה וקרקע:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\core\campArt.js</code>
+  <p><code>drawCampBackdrop()</code> מצייר את הנוף בתנועה ו־<code>drawCampTile()</code> מחליף ציור של אריחים מסוימים,
+    רק בשלב 1. הדמויות ומפות ההתנגשות אינן חלק ממודול זה.</p>
+  <p><strong>רכס ההרים המאויר, כחלק משכבת רקע בלבד:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\assets\images\scenery\camp-mountains.webp</code>
+  <p>שאר השכבות נוצרות בקוד. זו אינה תמונת מחנה מלאה שהודבקה על המסלול.</p>
+  <p><strong>ציור קרקע, סלעים, קרשים, אוהלים, יריעות, עשב ויתדות:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\game\tilemap.js</code>
+  <p>נקודות כניסה: <code>drawLayer()</code>, <code>_drawTile()</code> ופונקציות הציור של האריחים.
+    בשלב 1 ציור נבחר מופנה ל־<code>campArt.js</code>. אותו קובץ מכיל גם בדיקות התנגשות:
+    בהחלפת עיצוב אין לשנות אותן בלי צורך מפורש.</p>
+  <p><strong>מפת המחנה, שכבות האוהלים ומיקומי עצמים:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\data\level01.js</code>
+  <p>זהו קובץ נתונים שמשפיע גם על המסלול. צבעי השלב המרכזיים נמצאים ב־<code>src/data/levels.js</code>.</p>
+  <p><strong>החלופה המתאימה:</strong> מחנה מדברי יפה במבט צד עם שכבות עומק.
+    תמונת המחנה ששלחת יכולה לשמש השראה לצבע, תאורה, אוהלים ופרטים — היא אינה מפת התנגשות ולא מחליפה אוטומטית את הפלטפורמר.</p>
+
+  <h3 id="construction">6. שלב 2 — סדנת הרכבת המשכן</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\scenes\construction.js</code>
+  <p>פריסת הסדנה, מגש החלקים, כותרות, משוב, כפתורים וחלוניות:
+    <code>_drawTray()</code>, <code>_drawRebuild()</code>, <code>_drawNotes()</code>.</p>
+  <p><strong>ציור השרטוט והחלקים הדו־ממדיים:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\core\constructionArt.js</code>
+  <p>נקודות כניסה: <code>drawConstructionPlan()</code>, <code>drawBuildPart()</code>, <code>PART_COLORS</code>.</p>
+  <p><strong>מיקומים, קבוצות חלקים, מקורות, תלות בין חלקים ואזורי הנחה:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\data\level02.js</code>
+  <p>זה אינו קובץ קישוט בלבד. אם מבקשים רק שדרוג חזותי, יש לשמור את מידות התוכנית ואזורי ההנחה מסונכרנים.</p>
+
+  <h3 id="model3d">7. תצוגת המשכן בתלת־ממד — בתוך שלב 2</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\core\construction3d.js</code>
+  <p>מראה החומרים, התאורה, הקרקע, המצלמה והטקסטורות.
+    נקודות כניסה: <code>_materials()</code>, <code>_lighting()</code>, <code>_ground()</code>, <code>_clothTexture()</code>.</p>
+  <p><strong>הגדרת צורות ומידות המודל:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\data\mishkan3d.js</code>
+  <p>תמונה יכולה להדגים איך רוצים שהחומרים או התאורה ייראו. היא אינה מחליפה מודל אינטראקטיבי.
+    יש לשמור את ההבחנה בין פרט שמפורש במקור לבין המחשה עיצובית.</p>
+
+  <h3 id="jordan">8. שלב 3 — מעבר הירדן</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\scenes\play.js</code>
+  <p>קירות המים, בועות, רמזי מעברים והצפה:
+    <code>_drawWaterWalls()</code>, <code>_drawWaterGateHints()</code>, <code>_drawFlood()</code>.</p>
+  <p><strong>דגים ואיורי טבע:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\core\natureArt.js</code>
+  <p>בפרט <code>drawRiverFish()</code>. אריח קיר המים עצמו מצויר גם ב־<code>src/game/tilemap.js</code>.</p>
+  <p><strong>מסלול, קירות מים, אבנים ומיקומי דמויות:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\data\level03.js</code>
+  <p>החלופה צריכה להתאים לתנועה במבט צד ולשמור על זיהוי ברור של הקרקע, המעברים והאבנים.</p>
+
+  <h3 id="gilgal">9. שלב 4 — המחנה בגלגל</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\core\natureArt.js</code>
+  <p><code>drawGilgalBackdrop()</code> — רקע המחנה, דקלים ואבני הזיכרון;
+    <code>drawWheatField()</code> — שדות עומדים וכפופים;
+    <code>drawFieldGuard()</code> — שומרים;
+    <code>drawGrain()</code> — אגודות;
+    <code>drawBonusRoom()</code> ו־<code>drawShofarChallenge()</code> — בונוס וסימון האתגר.</p>
+  <p><strong>הרכבת המסך:</strong> <code>src/scenes/play.js</code>. <strong>נתוני המסלול והעצמים:</strong></p>
+  <code class="path">C:\Projects\TempleBuilder\src\data\level04.js</code>
+  <p>כיפוף השדה עצמו נשלט ב־<code>src/game/fields.js</code>; עיצוב חדש חייב לשמור על ההבדל בין שדה שמסתיר לבין שדה כפוף.</p>
+</section>
+
+<section id="minigames">
+  <h2>מיני־משחקים ומסכי המשוב שלהם</h2>
+  <h3>10. חידון — שאלת ידע</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\minigames\trivia.js</code>
+  <p>השאלה, ארבע האפשרויות, סימון נכון/שגוי, הסבר וסיכום החידון.
+    פונקציות מרכזיות: <code>draw()</code>, <code>_drawEnd()</code>.</p>
+  <p>השאלות וההסברים עצמם נמצאים ב־<code>src/data/trivia.js</code> ולא בקובץ העיצוב.</p>
+  <h3>11. מבחן תרומת הלב — מיון מצרכים</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\minigames\sorting.js</code>
+  <p>כרטיס המצרך, כפתורי קבוצות, סרגל זמן, משוב ולוח סיכום.
+    איורי המצרכים מגיעים מ־<code>src/core/materialArt.js</code>.</p>
+  <h3>12. חכמת לב — אריגה</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\minigames\weaving.js</code>
+  <p>הנול, היריעה, סלילי החוטים, מסך מעבר בין סיבובים, כישלון והצלחה:
+    <code>_drawLoom()</code>, <code>_drawSpools()</code>, <code>_drawFailed()</code>, <code>_drawDone()</code>.</p>
+  <h3>13. אתגר השופר — תזמון</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\minigames\shofarTiming.js</code>
+  <p>פתיחה, סמן, אזור מואר, מד הצלחות, משוב, כפתור תקיעה וסיום.
+    בעיצוב חלופי צריך לשמור על זיהוי חד של האזור המואר ועל אפשרות לחיצה בנייד.</p>
+  <h3>עיצוב משותף לכל המיני־משחקים</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\minigames\shared.js</code>
+  <p><code>backdrop()</code>, <code>panel()</code>, <code>header()</code>, <code>wrap()</code>, <code>bar()</code>.
+    שינוי כאן יכול לשנות כמה מיני־משחקים בבת אחת.</p>
+</section>
+
+<section id="shared">
+  <h2>דמויות, פריטים, ממשק ומסכי עזר</h2>
+  <h3 id="characters">14. בצלאל, המטה, דמויות המחנה ואויבי המדבר</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\core\art.js</code>
+  <p><code>drawPlayer()</code> — מראה בצלאל; <code>drawStaff()</code> — המטה;
+    <code>drawNPC()</code> — דמויות מלוות; <code>drawScorpion()</code> ו־<code>drawAmalekite()</code> — אויבים;
+    <code>drawAltar()</code> ו־<code>drawExitGate()</code> — נקודות שמירה ושער.</p>
+  <p>כרגע אלה ציורים בקוד, לא קובצי PNG של דמויות. אפשר לשלוח עיצוב דמות כחלופה;
+    התאמה לאנימציה מחייבת עבודה מעבר להחלפת תמונה בודדת.</p>
+  <p>התנועה וההתנגשות של בצלאל נמצאות ב־<code>src/game/player.js</code>;
+    התנהגות האויבים וההיעלמות נמצאות ב־<code>src/game/enemy.js</code>. אין לשנות אותן רק כדי להחליף צבע או גלימה.</p>
+
+  <h3>15. מצרכים, אבני זיכרון, פרסים ואפקטי איסוף</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\core\materialArt.js</code>
+  <p>איורי זהב, כסף, נחושת, חוטים, בדים, עורות, עצים, שמן ואבנים — <code>drawMaterial()</code>.</p>
+  <code class="path">C:\Projects\TempleBuilder\src\game\pickup.js</code>
+  <p>מחבר את סוג הפריט לציור שלו, וכולל חלקיקים ואפקטי איסוף.
+    איורי פרסים ואבני שבטים מופיעים גם ב־<code>src/core/art.js</code>; דגן מופיע ב־<code>src/core/natureArt.js</code>.</p>
+  <p>שמות, קבוצות וצבעי קבוצות המצרכים: <code>src/data/materials.js</code>.</p>
+
+  <h3 id="hud">16. בועות שיחה וממשק במהלך שלב</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\game\hud.js</code>
+  <ul>
+    <li><code>_drawDialog()</code> — תיבת הדיבור, תג שם הדובר וסימון המשך.</li>
+    <li><code>_drawTopBar()</code> ו־<code>_drawHeart()</code> — כותרת, לבבות וחיים.</li>
+    <li><code>_drawMaterials()</code> — רשימת התרומות והסבר בריחוף.</li>
+    <li><code>_drawWaterGauge()</code>, <code>_drawStones()</code>, <code>_drawHarvest()</code> — מדי שלבים 3–4.</li>
+    <li><code>_drawBanner()</code> ו־<code>_drawBottomBar()</code> — הודעות גדולות ושורת עזרה.</li>
+  </ul>
+  <p>טקסטים של שיחות מגיעים מקובצי השלבים. שינוי תוכן מדובר מצריך גם עדכון דיבוב;
+    שינוי המסגרת והצבע בלבד אינו מצריך יצירת שמע מחדש.</p>
+
+  <h3>17. השהיה, נפילה וסופת חול</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\scenes\play.js</code>
+  <p><code>_pauseOverlay()</code> — מסך השהיה; <code>_deathOverlay()</code> — הודעת נפילה וחיים שנותרו;
+    <code>_drawStorm()</code> — מראה הסופה. אלה שכבות בתוך שלב, לא מסכים בקבצים נפרדים.</p>
+
+  <h3>18. כפתורים, גופנים ומסגרות כלליים</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\core\ui.js</code>
+  <p><code>ButtonSet.draw()</code> — כפתורים שמשותפים למסכים רבים.</p>
+  <p>ב־<code>src/core/art.js</code> נמצאים גם <code>text()</code>, <code>roundRect()</code>, <code>glow()</code>:
+    שינוי שלהם משפיע על טקסט, מסגרות וזוהר בכל רחבי המשחק. למסך הפתיחה יש בנוסף ציור כפתורים משלו ב־<code>entryArt.js</code>.</p>
+
+  <h3 id="mobile">19. טעינה, שגיאת פתיחה ופקדי מגע</h3>
+  <code class="path">C:\Projects\TempleBuilder\index.html</code>
+  <p>מעטפת העמוד, מסך ״טוען…״, הודעת שגיאת אתחול ו־CSS של פקדי המגע והכפתורים בנייד.
+    אין כרגע קובץ CSS נפרד: העיצוב נמצא בתגית <code>&lt;style&gt;</code>.</p>
+  <code class="path">C:\Projects\TempleBuilder\src\core\touchPad.js</code>
+  <p>בניית פקדי התנועה, קפיצה, מטה, שופר, המשך, חזרה ומוזיקה.
+    <code>src/core/input.js</code> מטפל בקלט ולא באיור. שינוי מראה לא צריך לפגוע בריבוי אצבעות או בשחרור לחיצות.</p>
+  <code class="path">C:\Projects\TempleBuilder\src\main.js</code>
+  <p>התאמת הקנבס לגודל המסך, כפתור הדיבור, ורישום המסכים הפעילים.</p>
+
+  <h3>20. מעבר בין מסכים ואייקון האפליקציה</h3>
+  <code class="path">C:\Projects\TempleBuilder\src\scenes\sceneManager.js</code>
+  <p>ציור הדהייה במעבר בין מסכים; אינו מחזיק את הרקעים של המסכים עצמם.</p>
+  <p>האייקונים הם קובצי תמונה אמיתיים:</p>
+  <code class="path">C:\Projects\TempleBuilder\assets\icon.png</code>
+  <code class="path">C:\Projects\TempleBuilder\assets\icon-32.png</code>
+  <code class="path">C:\Projects\TempleBuilder\assets\icon.ico</code>
+</section>
+
+<section>
+  <h2>קבצים שלא כדאי לבחור בטעות</h2>
+  <ul>
+    <li><code>src/scenes/camp.js</code>, <code>src/core/camp3d.js</code>,
+      <code>src/core/campMap.js</code>, <code>src/data/camp01.js</code>,
+      <code>src/game/campWorld.js</code> — ניסוי המחנה שנשמר אך אינו רשום להפעלה במשחק הרגיל.
+      <strong>אלה אינם קובצי שלב 1 הפעיל.</strong></li>
+    <li><code>src/minigames/craft.js</code> — רכיב ניסיוני שרשום במפעל המיני־משחקים,
+      אך אינו חלק מתחנות השלבים הפעילים 1–5.</li>
+    <li><code>src/core/workshopArt.js</code> — איורי בעלי המלאכה מהגרסה הקודמת של הפתיחה; אינם הרקע החדש.</li>
+    <li>קבצים עם שם כמו <code>Copy</code> הם עותקים ולא בהכרח נטענים. אין לערוך אותם במקום הקובץ שמיובא בפועל.</li>
+    <li><code>tmp</code> מחזיקה צילומי בדיקה, עותקים מוקטנים וגיבויים. צילום מסך משם אינו בהכרח נכס שנמצא בשימוש במשחק.</li>
+    <li><code>src/vendor/three</code> היא ספריית תלת־ממד חיצונית, לא המקום לעיצוב מסך או צבעי המשכן.</li>
+  </ul>
+  <p><strong>איך יודעים מה פעיל?</strong> המסכים הרגילים נרשמים ב־<code>src/main.js</code>.
+    המיני־משחקים נרשמים ב־<code>src/minigames/index.js</code> ומופעלים לפי נתוני השלבים.</p>
+</section>
+
+<section id="alternatives">
+  <h2>איך לתת לי חלופת עיצוב</h2>
+  <ol>
+    <li><strong>ציין את שם המסך</strong> מהמדריך. אפשר לצרף גם את הנתיב שלו.</li>
+    <li><strong>צרף את תמונת החלופה או נתיב מלא אליה</strong>, או צילום מסך של העיצוב הנוכחי.</li>
+    <li><strong>אמור מה אהבת</strong>: צבעים, תאורה, עומק, רקע, דמויות, מסגרות או גופנים.</li>
+    <li><strong>הגדר מה להחליף</strong>: רקע בלבד, כל הממשק, דמות מסוימת או מסך שלם.</li>
+    <li><strong>הגדר מה לא לשנות</strong>: משחקיות, מיקומי פלטפורמות, שאלות, שמירות או דיבוב.</li>
+    <li>ציין אם צריך לבדוק מחשב, נייד לאורך ונייד לרוחב, ובקש לעדכן את תיקיית ההעלאה בסיום.</li>
+  </ol>
+  <div class="template">
+    <strong>נוסח שאפשר להעתיק ולמלא:</strong>
+    <p>המסך: ________</p>
+    <p>קובץ העיצוב מהמדריך: ________</p>
+    <p>תמונת החלופה או ההשראה: ________</p>
+    <p>אני אוהב בתמונה: ________</p>
+    <p>לשנות: רקע / צבעים / כפתורים / דמויות / המסך כולו.</p>
+    <p>לשמור ללא שינוי: המשחקיות, השמירות והדיבוב, אלא אם אבקש אחרת.</p>
+    <p>בסיום: בדיקות ללא קול, התאמה לנייד ועדכון TempleBuilder-Upload.</p>
+  </div>
+  <h3>איזו תמונה כדאי להכין?</h3>
+  <ul>
+    <li><strong>רקע מסך מלא:</strong> רצוי איור רחב באיכות טובה, למשל 1920×1080 או 1600×900.
+      אין צורך להכין בדיוק את המידה הסופית; נתאים חיתוך ופריסה לפי המסך.</li>
+    <li><strong>הפתיחה הנוכחית:</strong> הנכס המוכן הוא פנורמה רחבה בגודל 1600×650.
+      הכותרת והכפתורים נשארים נפרדים כדי ש״התחל״ ו״המשך״ יתחלפו ויעבדו במגע.</li>
+    <li><strong>עדיף רקע ללא טקסט וכפתורים מוטבעים.</strong> אפשר לשלוח גם דוגמה עם כיתובים,
+      אך אז נצטרך להכין רקע נקי ולא להסתפק בהדבקת צילום מסך.</li>
+    <li><strong>רקע שלב ריצה:</strong> נוף במבט צד, עם מקום ברור לקרקע ולדמות. מבט־על עשיר הוא השראה לסגנון, לא תחליף ישיר למפת פלטפורמר.</li>
+    <li><strong>דמות או פריט:</strong> רצוי רקע שקוף. לדמות נעה יידרשו כמה מצבי אנימציה,
+      או התאמה של הציור בקוד — לא רק תמונת עמידה אחת.</li>
+  </ul>
+  <div class="notice safe">
+    <strong>לא צריך לדעת איזה קובץ לערוך.</strong> אפשר פשוט לכתוב:
+    ״אני רוצה שהמסך של החידון ייראה כמו התמונה הזו, בלי לשנות את השאלות״.
+    המדריך מאפשר לנו לזהות יחד את המקום הנכון.
+  </div>
+</section>
+
+<section>
+  <h2>כללי עבודה שיש לשמור בכל שדרוג</h2>
+  <ul>
+    <li>שלב המחנה נשאר פלטפורמר דו־ממדי, אלא אם תבקש במפורש שינוי משחקיות.</li>
+    <li>לפני החלפה משמעותית שומרים גיבוי. אין להחליף קוד משחק בקובץ תמונה.</li>
+    <li>קובץ משותף כגון <code>art.js</code> או <code>ui.js</code> יכול להשפיע על כמה מסכים.</li>
+    <li>החלפת עיצוב צריכה לשמור על קריאות עברית, כפתורי מגע ומידות התנגשות.</li>
+    <li>בדיקות דפדפן מבוצעות בפרופיל מבודד וללא קול. אין לאפס את השמירה האישית לצורך צילום.</li>
+    <li>לאחר בדיקה מסנכרנים את קובצי המשחק והנכסים לתיקיית ההעלאה. מדריך זה נשאר מקומי בתיקיית <code>docs</code> ואין צורך לפרסם אותו.</li>
+    <li>האתר ברשת מתעדכן רק אחרי העלאה מחדש לפרויקט הקיים. קובצי המקור המקומיים אינם מתפרסמים אוטומטית.</li>
+  </ul>
+</section>
+<p class="muted">מסמך ייחוס לעיצוב — בונה המקדש · 30.10.2026</p>
+</main>
+</body>
+</html>

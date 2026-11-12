@@ -1,0 +1,33 @@
+{
+  "speaker": "מֹשֶׁה רַבֵּנוּ",
+  "voice": "he-IL-AvriNeural",
+  "rate": "-5%",
+  "provider": "Microsoft Edge online TTS; experimental voice-quality preview",
+  "lines": [
+    {
+      "id": "moshe-intro-01",
+      "text": "בְּצַלְאֵל. רָאִיתִי בָּהָר אֶת הַתַּבְנִית, וְעַכְשָׁו צָרִיךְ לִבְנוֹת אוֹתָהּ.",
+      "file": "moshe-intro-01.mp3",
+      "duration": 5.424,
+      "sha256": "5f7d266bfd8c5e91eadaf192ba75125edd2109ae96900152ae1131aec437256e",
+      "text_sha256": "f65ebe192da5ce742dcc54d701db36c7f1999cbbf29171db7c058b0986331f32"
+    },
+    {
+      "id": "moshe-intro-02",
+      "text": "הָעָם הֵבִיא תְּרוּמָה — חֲמִשָּׁה עָשָׂר מִינִים. אֲבָל הָרוּחַ פִּזְּרָה אוֹתָם בֵּין הַדְּיוּנוֹת. הָרִשְׁימָה נִמְצָאָה בַּפִּנָּה הַיָּמָנִית לְמַעְלָה.",
+      "file": "moshe-intro-02.mp3",
+      "duration": 10.032,
+      "sha256": "8329499f1296eafe1fb381cbd20b6277dae3f1a06dac6250108181e5e4491196",
+      "text_sha256": "2a70d5a67b0b962c73f2cb8b77e61a3e8cc749b3c1630379486b522a45ef6afb"
+    },
+    {
+      "id": "moshe-intro-03",
+      "text": "קַח אֶת הַמַּטֶּה: אוֹרוֹ מַרְתִּיעַ אֶת מִי שֶׁמְּאַיֵּם עָלֶיךָ, וְאֵינוֹ פּוֹגֵעַ בְּאִישׁ. וּבַדֶּרֶךְ — זִקְנֵי הָעָם יַעַזְרוּ לְךָ לִלְמֹד.",
+      "file": "moshe-intro-03.mp3",
+      "duration": 10.344,
+      "sha256": "78156c007181967fd520424a6c9e59d1037b00f6dd578ae58198416a3e9beaf4",
+      "text_sha256": "dae67c2ecb0d3bcdb2809dc66a301b662d2c6e0ea3f64d4fbd85b00d7d23ffb8"
+    }
+  ],
+  "generation_tool": "edge-tts 7.3.1"
+}

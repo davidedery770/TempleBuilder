@@ -1,0 +1,84 @@
+import { mkdir, writeFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+import { buildLevel01 } from '../src/data/level01.js';
+
+const root = fileURLToPath(new URL('../', import.meta.url));
+const folder = path.join(root, 'assets', 'audio', 'voice-preview');
+await mkdir(folder, { recursive: true });
+const moshe = buildLevel01().npcs.find(n => n.id === 'moshe');
+const manifest = {
+  speaker: moshe.name, voice: 'he-IL-AvriNeural', rate: '-5%',
+  provider: 'Microsoft Edge online TTS; experimental voice-quality preview',
+  lines: moshe.lines.slice(0, 3).map((text, i) => ({
+    id: `moshe-intro-${String(i + 1).padStart(2, '0')}`, text,
+    file: `moshe-intro-${String(i + 1).padStart(2, '0')}.mp3`,
+  })),
+};
+await writeFile(path.join(folder, 'sample.json'), JSON.stringify(manifest, null, 2) + '\n', 'utf8');
+const data = JSON.stringify(manifest).replace(/</g, '\\u003c');
+const html = `<!doctype html>
+<html lang="he" dir="rtl"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>בונה המקדש — ניסיון דיבוב בעברית</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#263942,#10191f 65%);color:#e8e4d7;font:18px "Segoe UI",Arial,sans-serif;display:grid;place-items:center;padding:32px}
+main{max-width:900px;width:100%}h1{color:#ffe0a0;font-size:36px;margin:0 0 12px}p{line-height:1.7;color:#b9c7c9}
+.bubble{margin:32px 0 20px;padding:30px 36px;background:#202f37;border:2px solid #b29350;border-radius:18px;box-shadow:0 12px 40px #0004}
+.top{display:flex;justify-content:space-between;align-items:center;color:#dfbf78;font-weight:700;gap:15px}.count{font-size:15px;color:#a3b6b9}
+#line{font-size:27px;color:#fff0ce;line-height:1.85;min-height:190px;margin:20px 0 12px}
+audio{width:100%;margin-top:10px}.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+button,a.download{font:600 18px "Segoe UI",Arial;cursor:pointer;border:1px solid #aa8a4e;border-radius:9px;color:#ffebbd;background:#34301e;padding:11px 24px;text-decoration:none}
+button:hover,a.download:hover{background:#514329}button:focus-visible,a:focus-visible{outline:3px solid #94d7d3;outline-offset:4px}button:disabled{opacity:.4;cursor:default}
+.secondary{background:#24323b}label{display:block;margin:20px 0;color:#b8cdca}#status{min-height:28px;color:#b8dfc6}
+.note{margin-top:24px;font-size:15px;color:#8fa6ae}a{color:#ecd093}
+@media(max-width:600px){body{padding:20px}.bubble{padding:23px}h1{font-size:27px}#line{font-size:22px;min-height:240px}button{font-size:16px;padding:10px 16px}}
+</style>
+<main>
+<h1>בונה המקדש — ניסיון דיבוב בעברית</h1>
+<p>שלוש שורות הפתיחה של משה, בקול גברי מסונתז ובעברית.<br>זו דוגמה נפרדת: המשחק הרגיל לא השתנה.</p>
+<section class="bubble" aria-label="בועת הדיבור">
+<div class="top"><span id="speaker"></span><span class="count" id="count"></span></div>
+<p id="line" aria-live="polite"></p>
+<audio id="voice" controls preload="metadata" aria-label="נגן הדיבוב בעברית"></audio>
+</section>
+<div class="controls">
+<button id="play">להשמעת הדוגמה</button>
+<button id="previous" class="secondary">המשפט הקודם</button>
+<button id="next" class="secondary">המשפט הבא</button>
+<button id="stop" class="secondary">עצירה</button>
+</div>
+<label><input type="checkbox" id="automatic" checked> לעבור לבועה הבאה בסיום ההקראה</label>
+<p id="status" role="status">לחצו להשמעה. במעבר למשפט הבא ההקראה הקודמת נעצרת.</p>
+<a class="download" href="Hebrew-Voice-Sample.mp3" download>הורדת כל הדוגמה כ־MP3</a>
+<p class="note">חשוב לבדוק באוזן את הגיית ״בצלאל״, ״תבנית המשכן״ והטקסט המנוקד.<br>הקבצים מוכנים מראש; ההאזנה כאן אינה שולחת טקסט לשירות הקראה.</p>
+</main>
+<script>
+const sample=${data};
+const audio=document.getElementById('voice'),status=document.getElementById('status');
+let index=0,started=false,version=0;
+function select(i,autoplay=false){
+  const token=++version;
+  audio.pause();audio.currentTime=0;index=i;
+  document.getElementById('speaker').textContent=sample.speaker;
+  document.getElementById('count').textContent='משפט '+(index+1)+' מתוך '+sample.lines.length;
+  document.getElementById('line').textContent=sample.lines[index].text;
+  document.getElementById('previous').disabled=index===0;
+  document.getElementById('next').disabled=index===sample.lines.length-1;
+  audio.src='assets/audio/voice-preview/'+sample.lines[index].file;
+  audio.load();audio.volume=0.75;
+  status.textContent=autoplay?'משמיע…':'מוכן להשמעה';
+  if(autoplay){started=true;audio.play().catch(()=>{if(token===version)status.textContent='לחצו על הפעלה כדי להשמיע.';});}
+}
+document.getElementById('play').onclick=()=>select(index,true);
+document.getElementById('next').onclick=()=>{if(index<sample.lines.length-1)select(index+1,started);};
+document.getElementById('previous').onclick=()=>{if(index>0)select(index-1,started);};
+document.getElementById('stop').onclick=()=>{++version;audio.pause();audio.currentTime=0;started=false;status.textContent='ההקראה נעצרה';};
+audio.onplay=()=>{started=true;status.textContent='משמיע משפט '+(index+1)+'…';};
+audio.onended=()=>{if(started&&document.getElementById('automatic').checked&&index<sample.lines.length-1)select(index+1,true);else status.textContent='המשפט הסתיים. אפשר להאזין שוב.';};
+audio.onerror=()=>{status.textContent='קובץ השמע אינו זמין. יש להפיק את דוגמת הדיבוב תחילה.';};
+window.addEventListener('pagehide',()=>audio.pause());
+select(0);
+</script></html>`;
+await writeFile(path.join(root, 'voice-preview.html'), html, 'utf8');
+console.log('Prepared 3 original Moses lines and voice-preview.html. Gameplay unchanged.');
